@@ -10,7 +10,7 @@ from rioxarray import merge
 import matplotlib.pyplot as plt
 import squarify
 from PIL import Image
-from fastapi.responses import StreamingResponse
+
 
 
 def rgb_to_hex(color : tuple):
@@ -123,9 +123,9 @@ def camo_request(latitude, longitude, area, month):
     print(color_df.head().to_string())              
 
     color_df["mean_color"] = color_df["colors"].apply(lambda x: np.mean(x))       #lambda function to chune this shit and get a mean
-    color_df = color_df[(color_df["mean_color"] < 230.0) & (color_df["mean_color"] > 25.0 )] #low and high intensity color pass    
+    color_df = color_df[(color_df["mean_color"] < 245.0) & (color_df["mean_color"] > 25.0 )] #low and high intensity color pass    
 
-    Q1 = color_df["mean_color"].quantile(0.25)
+    Q1 = color_df["mean_color"].quantile(0.20)
     Q3 = color_df["mean_color"].quantile(0.75)
 
     IQR = Q3 - Q1
@@ -144,16 +144,17 @@ def camo_request(latitude, longitude, area, month):
     print(RGB_count_dict)
 
     plt.rc("font", size=12)
-    squarify.plot(sizes=RGB_count_dict.keys(), label=RGB_count_dict.values(), color=RGB_count_dict.values(), alpha=1)
+    ax = squarify.plot(sizes=RGB_count_dict.keys(), color=RGB_count_dict.values(), alpha=1)
+    ax.set_axis_off()
 
     #convert figure into buffer that we can serve
     fig_buffer = io.BytesIO()
-    plt.savefig(fig_buffer, format=("PNG"))
+    plt.savefig(fig_buffer, format="PNG", bbox_inches="tight", pad_inches=0)
     fig_buffer.seek(0)
-
 
     return xarray_to_PIL(merged), Image.open(fig_buffer)
 
 if __name__ == "__main__":
     merged_image, fig_image = camo_request(32.715736, -117.161087, 5000, 5)
 
+ 
