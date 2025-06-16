@@ -1,0 +1,7 @@
+[[(np.float64(255.0), np.float64(255.0), np.float64(224.0)) 73]
+ [(np.float64(255.0), np.float64(255.0), np.float64(223.0)) 63]
+ [(np.float64(255.0), np.float64(255.0), np.float64(219.0)) 56]
+ ...
+ [(np.float64(195.0), np.float64(178.0), np.float64(170.0)) 1]
+ [(np.float64(247.0), np.float64(237.0), np.float64(213.0)) 1]
+ [(np.float64(243.0), np.float64(235.0), np.float64(245.0)) 1]]

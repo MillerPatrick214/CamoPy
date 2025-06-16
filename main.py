@@ -10,8 +10,6 @@ from camopy import camo_request
 import io
 import zipfile
 
-
-
 app = FastAPI()
 
 app.add_middleware(
@@ -47,7 +45,7 @@ def serve_images(latitude: float, longitude: float, box_size: float, month: int)
         # Request satellite image from camo_request
         sat_data, graph_data = camo_request(latitude, longitude, box_size, month)
         
-        # Check if sat_data is a PIL Image or needs conversion
+        # Check if sat_data is a PI L Image or needs conversion
         if isinstance(sat_data, Image.Image):
             sat_image = sat_data
         else:
