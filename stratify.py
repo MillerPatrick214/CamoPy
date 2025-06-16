@@ -1,3 +1,4 @@
+import ctypes
 import functools
 import skimage as ski
 import numpy as np
@@ -30,6 +31,15 @@ test_rgb_array = np.array([
 
 class Stratify:
 
+    dll = ctypes.CDLL('./quick_refine/x64/Release/quick-refine.dll')
+    dll.color_refine.argtypes = [
+        ctypes.POINTER(ctypes.c_float), #input_array
+        ctypes.c_int,                   #input_size
+        ctypes.c_int,                   #threshold for CIED
+        ctypes.POINTER(ctypes.c_float), #output_array
+    ]
+    dll.color_refine.restype = ctypes.POINTER(ctypes.c_float)
+
     def stopwatch(func):
         @functools.wraps(func)
         def wrapper_timer(*args, **kwargs):
@@ -41,6 +51,13 @@ class Stratify:
             print(f"Finished {func.__name__}() in {runtime:.4f} secs")
             return value
         return wrapper_timer
+    
+    @staticmethod
+    @stopwatch
+    def color_refine_py(input_array : np.ndarray, threshold : int):
+        input_array.flatten()
+        input_array = input_array.astype(np.float32)
+        input_size = len(input_array).
     
     @staticmethod
     def rgbarr_to_labarr(array : np.ndarray) -> np.ndarray:
