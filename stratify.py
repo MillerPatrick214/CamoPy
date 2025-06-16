@@ -1,5 +1,6 @@
 import ctypes
 import functools
+from operator import index
 import skimage as ski
 import numpy as np
 import time
@@ -30,16 +31,6 @@ test_rgb_array = np.array([
 ], dtype=object)
 
 class Stratify:
-
-    dll = ctypes.CDLL('./quick_refine/x64/Release/quick-refine.dll')
-    dll.color_refine.argtypes = [
-        ctypes.POINTER(ctypes.c_float), #input_array
-        ctypes.c_int,                   #input_size
-        ctypes.c_int,                   #threshold for CIED
-        ctypes.POINTER(ctypes.c_float), #output_array
-    ]
-    dll.color_refine.restype = ctypes.POINTER(ctypes.c_float)
-
     def stopwatch(func):
         @functools.wraps(func)
         def wrapper_timer(*args, **kwargs):
@@ -54,11 +45,42 @@ class Stratify:
     
     @staticmethod
     @stopwatch
-    def color_refine_py(input_array : np.ndarray, threshold : int):
-        input_array.flatten()
-        input_array = input_array.astype(np.float32)
-        input_size = len(input_array).
-    
+    def color_refine_py(input_array : np.ndarray, threshold : int = 10) -> np.ndarray:
+        dll = ctypes.CDLL('./quick_refine/x64/Release/quick-refine.dll')
+
+        dll.color_refine.argtypes = [
+            ctypes.POINTER(ctypes.c_float), #input_array
+            ctypes.c_int,                   #input_size
+            ctypes.c_int,                   #threshold for CIED
+            ctypes.POINTER(ctypes.c_float), #output_array
+        ]
+
+        dll.color_refine.restype = ctypes.POINTER(ctypes.c_float)
+        flat_array = [(x for item in input_array x in (item[0]+ (item[1],)))]
+        flat_array = map(lambda x: ctypes.c_float(x), flat_array)
+
+        input_array = [map(lambda x : ctypes.pointer(x)), input_array]
+        #input_array = input_array.flatten()
+        input_size = len(input_array)
+        output_array = np.full_like(input_array, -1.0, dtype=np.float32)
+        dll.color_refine(input_array, input_size, threshold, output_array)
+
+        #remove all -1 vals 
+        remove_ind = np.argwhere(output_array == -1)
+        trimmed_array = np.delete(output_array, remove_ind)
+
+        return_array = np.full_like(len(trimmed_array)/4, [], np.float32)
+
+        if not len(trimmed_array) % 4 ==0:
+            print("ERROR: incorrect number of elements in output array returning from C++")
+
+        for i in range(0, len(return_array)):
+            return_array[i].append((trimmed_array[i * 4], trimmed_array[(i * 4) + 1], trimmed_array[(i * 4) + 2]))
+            return_array[i].append(trimmed_array[(i*4) + 3])
+
+        return return_array
+            
+
     @staticmethod
     def rgbarr_to_labarr(array : np.ndarray) -> np.ndarray:
         print(array[:, 0])
@@ -67,6 +89,8 @@ class Stratify:
     
         replacement_col = ski.color.rgb2lab(values, illuminant='D65', observer='2', channel_axis=-1)
         array[:, 0] = [tuple(lab) for lab in replacement_col]
+
+
         return array
 
     """  
@@ -89,7 +113,7 @@ class Stratify:
     
     @staticmethod
     @stopwatch
-    def refine(lab_array :np.ndarray, threshold= 10, count=1) ->np.ndarray: #This is only O(n) so it should be literally expontentially better. Less memory overhang too without recursion. Only issue that this requires a properly sorted list. So It would be O(n) +  O for whatever sort. Additionally sort would have to be ordered by ciede2000. 
+    def refine(lab_array :np.ndarray, threshold=10, count=1) ->np.ndarray: #This is only O(n) so it should be literally expontentially better. Less memory overhang too without recursion. Only issue that this requires a properly sorted list. So It would be O(n) +  O for whatever sort. Additionally sort would have to be ordered by ciede2000. 
         from collections import defaultdict
 
         print("refine prior size " + str(len(lab_array)))
@@ -127,9 +151,6 @@ class Stratify:
         array[:, 0] = [tuple(lab) for lab in replacement_col]
 
         return array
-    
-    def bucket_refine(lab_array: np.ndarray) -> np.ndarray:  #O(n) and avoids complexity.
-        pass
 
 
     
@@ -153,8 +174,8 @@ class Stratify:
     @staticmethod
     def stratify(rgb_array : np.ndarray) -> np.ndarray:   
         lab_array = Stratify.rgbarr_to_labarr(rgb_array)
-        lab_array_sorted = Stratify.lab_sort(lab_array)
-        color_strata = Stratify.refine(lab_array_sorted)
+        #lab_array_sorted = Stratify.lab_sort(lab_array)
+        color_strata = Stratify.color_refine_py(lab_array)
         strata_array = Stratify.labarr_to_rgbarr(color_strata)
         print(f"Stratify array return type: {type(strata_array)}")
         return strata_array
