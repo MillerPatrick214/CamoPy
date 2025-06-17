@@ -1,0 +1,117 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Big Daddy Patrick\\Desktop\\PythonSatAPI\\quick-refine\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2D373ABA-DFBD-4075-A0CA-07615E68EF78}|quick-refine.vcxproj|C:\\Users\\Big Daddy Patrick\\Desktop\\PythonSatAPI\\quick-refine\\dllmain.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2D373ABA-DFBD-4075-A0CA-07615E68EF78}|quick-refine.vcxproj|solutionrelative:dllmain.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D373ABA-DFBD-4075-A0CA-07615E68EF78}|quick-refine.vcxproj|C:\\Users\\Big Daddy Patrick\\Desktop\\PythonSatAPI\\quick-refine\\color_refine.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2D373ABA-DFBD-4075-A0CA-07615E68EF78}|quick-refine.vcxproj|solutionrelative:color_refine.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D373ABA-DFBD-4075-A0CA-07615E68EF78}|quick-refine.vcxproj|C:\\Users\\Big Daddy Patrick\\Desktop\\PythonSatAPI\\quick-refine\\color_refine.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2D373ABA-DFBD-4075-A0CA-07615E68EF78}|quick-refine.vcxproj|solutionrelative:color_refine.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2D373ABA-DFBD-4075-A0CA-07615E68EF78}|quick-refine.vcxproj|C:\\Users\\Big Daddy Patrick\\Desktop\\PythonSatAPI\\quick-refine\\pch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2D373ABA-DFBD-4075-A0CA-07615E68EF78}|quick-refine.vcxproj|solutionrelative:pch.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 123,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{de1fc918-f32e-4dd7-a915-1792a051f26b}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "pch.cpp",
+              "DocumentMoniker": "C:\\Users\\Big Daddy Patrick\\Desktop\\PythonSatAPI\\quick-refine\\pch.cpp",
+              "RelativeDocumentMoniker": "pch.cpp",
+              "ToolTip": "C:\\Users\\Big Daddy Patrick\\Desktop\\PythonSatAPI\\quick-refine\\pch.cpp",
+              "RelativeToolTip": "pch.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-06-16T15:17:01.948Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "color_refine.cpp",
+              "DocumentMoniker": "C:\\Users\\Big Daddy Patrick\\Desktop\\PythonSatAPI\\quick-refine\\color_refine.cpp",
+              "RelativeDocumentMoniker": "color_refine.cpp",
+              "ToolTip": "C:\\Users\\Big Daddy Patrick\\Desktop\\PythonSatAPI\\quick-refine\\color_refine.cpp",
+              "RelativeToolTip": "color_refine.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-06-15T20:18:11.258Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "color_refine.h",
+              "DocumentMoniker": "C:\\Users\\Big Daddy Patrick\\Desktop\\PythonSatAPI\\quick-refine\\color_refine.h",
+              "RelativeDocumentMoniker": "color_refine.h",
+              "ToolTip": "C:\\Users\\Big Daddy Patrick\\Desktop\\PythonSatAPI\\quick-refine\\color_refine.h",
+              "RelativeToolTip": "color_refine.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAApAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2025-06-15T20:04:52.691Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "dllmain.cpp",
+              "DocumentMoniker": "C:\\Users\\Big Daddy Patrick\\Desktop\\PythonSatAPI\\quick-refine\\dllmain.cpp",
+              "RelativeDocumentMoniker": "dllmain.cpp",
+              "ToolTip": "C:\\Users\\Big Daddy Patrick\\Desktop\\PythonSatAPI\\quick-refine\\dllmain.cpp",
+              "RelativeToolTip": "dllmain.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-06-15T20:04:22.752Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 277,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

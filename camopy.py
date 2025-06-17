@@ -154,7 +154,10 @@ def camo_request(latitude, longitude, area, month):
 
     rgb_df = rgb_df.to_numpy()
     
-    
+    #Also I have doubts about the efficacy of this entire 'trimming' process. What so we are trimming colors too far away from a mean? Accent colors are necessary
+    #simply adjusting the threshold for stratify is likely a more effective method of doing this. Additionally, arriving at a mean color instead of just using the first different enough? Need to think about that.
+    #Need some way to cut out tiny tiny counts as well. Not sure the best way to do this without killing off accent colors.
+    #much more worried about invalid data from merges
     #----------------------------------------------
 
 

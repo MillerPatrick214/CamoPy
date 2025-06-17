@@ -1,6 +1,7 @@
 import ctypes
 import functools
 from operator import index
+from unittest import result
 import skimage as ski
 import numpy as np
 import time
@@ -45,23 +46,59 @@ class Stratify:
     
     @staticmethod
     @stopwatch
-    def color_refine_py(input_array : np.ndarray, threshold : int = 10) -> np.ndarray:
-        dll = ctypes.CDLL('./quick_refine/x64/Release/quick-refine.dll')
+    def color_refine_py(input_array : np.ndarray, threshold : int = 25) -> np.ndarray:
+        dll = ctypes.CDLL('./quick-refine/x64/Release/quick-refine.dll')
 
         dll.color_refine.argtypes = [
             ctypes.POINTER(ctypes.c_float), #input_array
             ctypes.c_int,                   #input_size
             ctypes.c_int,                   #threshold for CIED
-            ctypes.POINTER(ctypes.c_float), #output_array
+            ctypes.POINTER(ctypes.c_int),   #pass by ref for output size
+            ctypes.POINTER(ctypes.c_float)  #pass by ref for output array
         ]
 
-        dll.color_refine.restype = ctypes.POINTER(ctypes.c_float)
-        flat_array = [(x for item in input_array x in (item[0]+ (item[1],)))]
+        dll.color_refine.restype = ctypes.c_voidp 
+
+        flat_list = []
+        for item in input_array:
+            lab_color = item[0]
+            count = item[1]
+            flat_list.extend([lab_color[0], lab_color[1], lab_color[2], count])
+        
+        input_size = len(input_array)
+        flat_array = (ctypes.c_float * len(flat_list))(*flat_list)
+        max_output_size = input_size * 4
+        output_array = (ctypes.c_float * max_output_size)()
+
+        output_size = ctypes.c_int(0)
+
+        dll.color_refine(
+            flat_array,
+            input_size,
+            threshold,
+            ctypes.byref(output_size),
+            output_array
+        )
+
+        actual_output_size = output_size.value
+        if actual_output_size == 0:
+            return np.array([], dtype=object).reshape(0, 2)
+        
+        result_list = []
+        for i in range(actual_output_size):
+            result_list.append([
+                (output_array[i * 4], output_array[(i * 4) + 1], output_array[(i * 4) + 2]), 
+                output_array[(i * 4) + 3]])
+            
+        return np.array(result_list, dtype=object)
+
+
+        """flat_array = [(x for item in input_array x in (item[0]+ (item[1],)))]
         flat_array = map(lambda x: ctypes.c_float(x), flat_array)
 
         input_array = [map(lambda x : ctypes.pointer(x)), input_array]
         #input_array = input_array.flatten()
-        input_size = len(input_array)
+        input_size = len(input_array) #num of colors not elements
         output_array = np.full_like(input_array, -1.0, dtype=np.float32)
         dll.color_refine(input_array, input_size, threshold, output_array)
 
@@ -78,7 +115,7 @@ class Stratify:
             return_array[i].append((trimmed_array[i * 4], trimmed_array[(i * 4) + 1], trimmed_array[(i * 4) + 2]))
             return_array[i].append(trimmed_array[(i*4) + 3])
 
-        return return_array
+        return return_array"""
             
 
     @staticmethod
@@ -164,9 +201,6 @@ class Stratify:
         sort_indices = np.lexsort((b_vals, a_vals, l_vals))
         sorted_array = lab_array[sort_indices]
         
-        with open("sortedarray.txt", "w+") as txt:
-            for element in sorted_array:
-                txt.write(f"{element}\n")
 
         return sorted_array
         
@@ -178,6 +212,11 @@ class Stratify:
         color_strata = Stratify.color_refine_py(lab_array)
         strata_array = Stratify.labarr_to_rgbarr(color_strata)
         print(f"Stratify array return type: {type(strata_array)}")
+
+        with open("sortedarray.txt", "w+") as txt:
+            for element in strata_array:
+                txt.write(f"{element}\n")
+
         return strata_array
     
     
