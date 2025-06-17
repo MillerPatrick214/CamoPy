@@ -65,7 +65,7 @@ def serve_images(latitude: float, longitude: float, box_size: float, month: int)
         graph_image.save(graph_buffer, format="PNG")
         graph_buffer.seek(0)
 
-        zip_buff = create_zip(sat_buffer,  graph_buffer) #returns another buffer containing a zip file
+        zip_buff = create_zip(sat_buffer,  graph_buffer) #returns another buffer containing a zip     file
     
         # Return the image as a response
         return Response(content=zip_buff.getvalue(), media_type="application/zip", headers={"Content-Disposition": "attachment; filename=images.zip"})
