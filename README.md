@@ -5,7 +5,7 @@ Would like to incorporate sub-pixel analysis, additional bands, and a flora API 
 
 Serves as the backend of my camoflauge-pattern/color matching site. FastAPI enables the front end to make easy API calls to this software, which then returns results. Given the large size of the sattelite rasters, I used buffers to efficiently pass around data so we aren't saving anything to disk uncessarily.
 
-Due to worst case scenario O(N^2) complexity of comparing each color to one another using the CIED2000 formula I wrote a dll in c++ to speed up the process. While there are less accurate algorithims with better run time, they are not accurate enough for my liking. 
+Due to worst case scenario O(N^2) complexity of comparing each color to one another using the CIED2000 formula I wrote a dll in c++ to speed up the process. While there are other algorithims & methods of stratifying/combining colors with better run times, they are not sufficiently accurate enough for my liking. 
 
 # Flow
 
