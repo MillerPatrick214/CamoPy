@@ -41,10 +41,11 @@ def analyze_camo() -> None:
         if (image.endswith((".png", ".jpg",".jpeg"))):
             #print('reeee')
             with Image.open(f"{camoset_dir}/{image}") as img:
-                filtered_img = img.filter(ImageFilter.MedianFilter(size=3)) #this works incredibly well at removing noise from JPG images
-                img.show()
-                filtered_img.show()
-                img_array = np.array(filtered_img, dtype = np.uint8)
+                img = img.resize((150,150))                                 #need to resize this or it takes like at least an hour per image
+                #filtered_img = img.filter(ImageFilter.MedianFilter(size=3)) #this works incredibly well at removing noise from JPG images
+                #img.show()
+                #filtered_img.show()
+                img_array = np.array(img, dtype = np.uint8)
                 height, width, bands = img_array.shape
                 flat_array = img_array.reshape(height * width, bands) #collapse height and width to make 2 d (pixels, bands)
                 #flat_array = np.unique(flat_array, axis=0) I think only passing a unique array is biting us in the ass as I'm not letting frequency suggest which way the mean color leans.
@@ -60,8 +61,9 @@ def analyze_camo() -> None:
                         ))
                 print(cluster_centers)
                 print(hex_array)
-                plot_colors(hex_array)
+                #plot_colors(hex_array)
                 #refine_call(flat_array)
+                
 
 def quantize_colors(array):
     #for number of colors peep silhouette analysis https://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_silhouette_analysis.html#sphx-glr-auto-examples-cluster-plot-kmeans-silhouette-analysis-py
@@ -74,7 +76,7 @@ def quantize_colors(array):
 
 def trim(array, labels):
     sil_vals_array = np.array(silhouette_samples(array, labels))
-    del_indicies = np.where(sil_vals_array < .3 ) #.7
+    del_indicies = np.where(sil_vals_array < .3 )
     array = np.delete(array, del_indicies, axis=0)
     with open('flat_array.txt', "w+") as txt:
         for val in sil_vals_array:
@@ -101,51 +103,7 @@ def n_colors_best_fit(array):    #damn this takes a while
             best_fit = key
 
     return best_fit
-
-
     #God damn this takes a long time -- would love to be able to speed up.
-
-def refine_call(array : np.ndarray) -> np.ndarray:
-    dll = ctypes.CDLL("./analyze-camo/camo-api-refine.dll")
-    
-    dll.color_refine.argtypes = [
-          ctypes.POINTER(ctypes.c_float), #input_array
-          ctypes.c_int,                   #input_size
-          ctypes.c_int,                   #threshold for CIED
-          ctypes.POINTER(ctypes.c_int),   #pass by ref for output size
-          ctypes.POINTER(ctypes.c_float)  #pass by ref for output array
-      ]
-    
-    dll.color_refine.restype = ctypes.c_voidp
-
-    flat_list = []
-    for element in array:
-      flat_list.extend([element[0], element[1], element[2]])
-
-    input_size = len(array)
-    flat_array = (ctypes.c_float * len(flat_list))(*flat_list)
-    max_output_size = input_size * 3
-    output_array = (ctypes.c_float * max_output_size)()
-    output_size = ctypes.c_int(0)
-    threshold = 5 #may need to be adjusted down. The reason why we have to do any of this crap is due to compression on images screwing up colors. This may benefit by the "bucket" approach I was thinking about w/ note in stratify
-
-    dll.color_refine(
-            flat_array,
-            input_size,
-            threshold,
-            ctypes.byref(output_size),
-            output_array
-        )
-    
-    result_array = np.array(output_array)
-    result_array = result_array.reshape(-1, 3)
-    print("result_array: " + str(result_array))
-
-    print(f"shape {result_array.shape}")
-
-    result_array = ski.color.lab2rgb(result_array)
-    result_array = (result_array * 255).astype(int)
-    result_list = list(map(lambda RGB : rgb_to_hex(RGB), result_array))
 
       
 if __name__ == "__main__":
