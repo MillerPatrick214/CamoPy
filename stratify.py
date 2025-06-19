@@ -44,6 +44,7 @@ class Stratify:
             return value
         return wrapper_timer
     
+
     @staticmethod
     @stopwatch
     def color_refine_py(input_array : np.ndarray, threshold : int = 25) -> np.ndarray:
@@ -91,31 +92,6 @@ class Stratify:
                 output_array[(i * 4) + 3]])
             
         return np.array(result_list, dtype=object)
-
-
-        """flat_array = [(x for item in input_array x in (item[0]+ (item[1],)))]
-        flat_array = map(lambda x: ctypes.c_float(x), flat_array)
-
-        input_array = [map(lambda x : ctypes.pointer(x)), input_array]
-        #input_array = input_array.flatten()
-        input_size = len(input_array) #num of colors not elements
-        output_array = np.full_like(input_array, -1.0, dtype=np.float32)
-        dll.color_refine(input_array, input_size, threshold, output_array)
-
-        #remove all -1 vals 
-        remove_ind = np.argwhere(output_array == -1)
-        trimmed_array = np.delete(output_array, remove_ind)
-
-        return_array = np.full_like(len(trimmed_array)/4, [], np.float32)
-
-        if not len(trimmed_array) % 4 ==0:
-            print("ERROR: incorrect number of elements in output array returning from C++")
-
-        for i in range(0, len(return_array)):
-            return_array[i].append((trimmed_array[i * 4], trimmed_array[(i * 4) + 1], trimmed_array[(i * 4) + 2]))
-            return_array[i].append(trimmed_array[(i*4) + 3])
-
-        return return_array"""
             
 
     @staticmethod
@@ -130,23 +106,6 @@ class Stratify:
 
         return array
 
-    """  
-    @staticmethod
-    @stopwatch
-    def recursive_refine(lab_array :np.ndarray, threshold=1.2, count=1) -> np.ndarray:    #Ah hell nah brother we got that O(n**2). Fix this bullshit
-        print(f"Recursion Layer: {count}")                                                #maybe keep this shit in a dictionary so it's hashed
-        for i, val in enumerate(lab_array[:, 0]):
-            for j, compVal in enumerate(lab_array[:, 0]):
-                if (i == j): continue
-                delta = ski.color.deltaE_ciede2000(val, compVal)
-                print("delta: ", delta)
-                if (delta <= threshold):
-                    lab_array[i, 1] = lab_array[i, 1] + lab_array[j, 1]     #combine counts
-                    lab_array = np.delete(lab_array, (j), axis=0)           #delete similar    
-                    return Stratify.recursive_refine(lab_array, count=count+1) #enter new layer of recursion
-            
-    
-        return lab_array""" 
     
     @staticmethod
     @stopwatch
@@ -175,6 +134,7 @@ class Stratify:
         print("refine new size " + str(len(refined_list)))
         return np.array(refined_list, dtype=object)
 
+
     @staticmethod
     def labarr_to_rgbarr(array : np.ndarray) -> np.ndarray:
         print(array[:, 0])
@@ -189,7 +149,6 @@ class Stratify:
 
         return array
 
-
     
     @staticmethod
     @stopwatch
@@ -200,8 +159,7 @@ class Stratify:
 
         sort_indices = np.lexsort((b_vals, a_vals, l_vals))
         sorted_array = lab_array[sort_indices]
-        
-
+    
         return sorted_array
         
  

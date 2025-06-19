@@ -1,5 +1,4 @@
 import io
-import re
 from typing import Type
 from xml.etree.ElementTree import PI
 from matplotlib.colors import hex2color
