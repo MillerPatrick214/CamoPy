@@ -20,11 +20,12 @@ app.add_middleware(
     allow_headers=["*"],  # Or list specific headers
 )
 
-def create_zip(sat_buff, graph_buff):
+def create_zip(sat_buff, graph_buff, json_buff):
     zip_buff = io.BytesIO()
     with zipfile.ZipFile(zip_buff, mode="x") as zf:
         zf.writestr("satellite_image.png", sat_buff.getvalue())
         zf.writestr("graph_image.png", graph_buff.getvalue())
+        zf.writestr("refined_colors.json", json_buff.getvalue())
     zip_buff.seek(0)
     return zip_buff
 
@@ -43,7 +44,7 @@ def read_root():
 def serve_images(latitude: float, longitude: float, box_size: float, month: int):
     try:
         # Request satellite image from camo_request
-        sat_data, graph_data = camo_request(latitude, longitude, box_size, month)
+        sat_data, graph_data, color_json= camo_request(latitude, longitude, box_size, month)
         
         # Check if sat_data is a PI L Image or needs conversion
         if isinstance(sat_data, Image.Image):
@@ -57,6 +58,7 @@ def serve_images(latitude: float, longitude: float, box_size: float, month: int)
             graph_image = Image.new("RGB", (200, 200), color=(255, 0, 0))
 
 
+
         sat_buffer = io.BytesIO()
         sat_image.save(sat_buffer, format="PNG")
         sat_buffer.seek(0)
@@ -65,7 +67,7 @@ def serve_images(latitude: float, longitude: float, box_size: float, month: int)
         graph_image.save(graph_buffer, format="PNG")
         graph_buffer.seek(0)
 
-        zip_buff = create_zip(sat_buffer,  graph_buffer) #returns another buffer containing a zip     file
+        zip_buff = create_zip(sat_buffer,  graph_buffer, color_json) #returns another buffer containing a zip     file
     
         # Return the image as a response
         return Response(content=zip_buff.getvalue(), media_type="application/zip", headers={"Content-Disposition": "attachment; filename=images.zip"})
@@ -78,3 +80,5 @@ if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
 
 #Url_Test : http://127.0.0.1:8000/image/32.715736_-117.161087_5000_5
+
+

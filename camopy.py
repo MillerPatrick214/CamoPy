@@ -1,7 +1,9 @@
 import io
-from typing import Type
+import json
+from typing import IO, Type
 from xml.etree.ElementTree import PI
 from matplotlib.colors import hex2color
+from shapely import buffer
 from core import Sentinel, Request
 import datetime
 import pandas as pd
@@ -125,6 +127,7 @@ def camo_request(latitude, longitude, area, month):
     
     #Pandas work for filtering to IQR colors ------------------------------------------------------------------------------------------------------------
     print(f"color array {len(color_array)}")    #Patrick from future: but why bring in pandas in the first place? I could easily do this in numpy and avoid additional overhead and converting everything into pandas only to convert it back.
+                                                #Patrick from the more distant future: Pandas is just so much easier to work with when it comes to this kind of a trimming/analysis. While there are changes to be made here, I don't think the potential performance trade offs are worth the headache
     val_count = pd.Series(color_array, name="colors").value_counts(dropna=True)                   
     color_df = val_count.to_frame()
     color_df = color_df.reset_index()
@@ -135,16 +138,16 @@ def camo_request(latitude, longitude, area, month):
     #print(color_df.head().to_string())              
 
     color_df["mean_color"] = color_df["colors"].apply(lambda x: np.mean(x))       #lambda function to chune this shit and get a mean
-    color_df = color_df[(color_df["mean_color"] < 245.0) & (color_df["mean_color"] > 25.0 )] #low and high intensity color pass    
+    color_df = color_df[(color_df["mean_color"] < 235.0) & (color_df["mean_color"] > 20.0 )] #low and high intensity color pass    
 
-    Q1 = color_df["mean_color"].quantile(0.25)
-    Q3 = color_df["mean_color"].quantile(0.75)
+    #Q1 = color_df["mean_color"].quantile(0.25)
+    #Q3 = color_df["mean_color"].quantile(0.75)
 
-    IQR = Q3 - Q1
+    #IQR = Q3 - Q1
 
-    outliers = color_df[(color_df["mean_color"] < Q1 - 1.5 * IQR) | (color_df["mean_color"] > Q3 + 1.5 * IQR)] #def
+    #outliers = color_df[(color_df["mean_color"] < Q1 - 1.5 * IQR) | (color_df["mean_color"] > Q3 + 1.5 * IQR)] #def
         
-    color_df = color_df[~color_df["colors"].isin(outliers["colors"])]
+    #color_df = color_df[~color_df["colors"].isin(outliers["colors"])]
 
     rgb_df = color_df.drop(["mean_color"], axis=1)
 
@@ -158,9 +161,6 @@ def camo_request(latitude, longitude, area, month):
     #Need some way to cut out tiny tiny counts as well. Not sure the best way to do this without killing off accent colors.
     #much more worried about invalid data from merges
     #----------------------------------------------
-
-
-
 
     print(f"size of rgb_df = {rgb_df.size}")
     
@@ -185,10 +185,25 @@ def camo_request(latitude, longitude, area, month):
     plt.savefig(fig_buffer, format="PNG", bbox_inches="tight", pad_inches=0)
     fig_buffer.seek(0)
 
-    return xarray_to_PIL(merged), Image.open(fig_buffer)
+    #numpy -> json for transfer to frontend
+    total_summed_counts = np.sum(refined_colors[:, 1])      #quick convert to normalized vals so it's easier to show as percentages
+    normalized_refined_colors = refined_colors
+    normalized_refined_colors[:, 1] = refined_colors[:, 1] / total_summed_counts
 
+    json_buffer = array_to_json_buffer(normalized_refined_colors)
+    
+    return xarray_to_PIL(merged), Image.open(fig_buffer), json_buffer
+
+
+def array_to_json_buffer(array : np.ndarray):   
+    py_dict = dict(zip(array[:, 0].tolist(), array[:, 1].tolist())) 
+    json_buffer = io.StringIO()
+    json.dump([py_dict], json_buffer)
+    json_buffer.seek(0)
+    return json_buffer
+    
 if __name__ == "__main__":
-    merged_image, fig_image = camo_request(32.715736, -117.161087, 5000, 5)
+    merged_image, fig_image, me_lil_cheeky_json = camo_request(32.715736, -117.161087, 5000, 5)
 
 
  

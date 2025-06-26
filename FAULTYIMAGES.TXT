@@ -1,0 +1,4 @@
+lat: 33.45168747158472
+long: -112.1626850761024
+month: Sept
+desc: blue/green areas running diagnolly across image. Blues included in output. 

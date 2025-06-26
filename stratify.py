@@ -174,7 +174,6 @@ class Stratify:
         with open("sortedarray.txt", "w+") as txt:
             for element in strata_array:
                 txt.write(f"{element}\n")
-
         return strata_array
     
     
