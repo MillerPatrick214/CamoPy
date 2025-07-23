@@ -1,0 +1,16 @@
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\obj\Debug\net8.0-windows\CamoAPIGUI.Form1.resources
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\obj\Debug\net8.0-windows\CamoAPIGUI.csproj.GenerateResource.cache
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\obj\Debug\net8.0-windows\CamoAPIGUI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\obj\Debug\net8.0-windows\CamoAPIGUI.AssemblyInfoInputs.cache
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\obj\Debug\net8.0-windows\CamoAPIGUI.AssemblyInfo.cs
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\obj\Debug\net8.0-windows\CamoAPIGUI.csproj.CoreCompileInputs.cache
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\bin\Debug\net8.0-windows\CamoAPIGUI.exe
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\bin\Debug\net8.0-windows\CamoAPIGUI.deps.json
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\bin\Debug\net8.0-windows\CamoAPIGUI.runtimeconfig.json
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\bin\Debug\net8.0-windows\CamoAPIGUI.dll
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\bin\Debug\net8.0-windows\CamoAPIGUI.pdb
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\obj\Debug\net8.0-windows\CamoAPIGUI.dll
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\obj\Debug\net8.0-windows\refint\CamoAPIGUI.dll
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\obj\Debug\net8.0-windows\CamoAPIGUI.pdb
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\obj\Debug\net8.0-windows\CamoAPIGUI.genruntimeconfig.cache
+C:\Users\Big Daddy Patrick\source\repos\CamoAPIGUI\obj\Debug\net8.0-windows\ref\CamoAPIGUI.dll
